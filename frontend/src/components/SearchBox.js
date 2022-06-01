@@ -21,7 +21,7 @@ export default function SearchBox() {
           name="q"
           id="q"
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="search products..."
+          placeholder="search..."
           aria-label="Search"
           aria-describedby="button-search"
         ></FormControl>
