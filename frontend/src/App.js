@@ -2,6 +2,7 @@ import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HomeScreen from './screens/HomeScreen';
+import DvorahDailyScreen from './screens/DvorahDailyScreen';
 import ProductScreen from './screens/ProductScreen';
 import Navbar from 'react-bootstrap/Navbar';
 import Badge from 'react-bootstrap/Badge';
@@ -28,6 +29,7 @@ import SearchScreen from './screens/SearchScreen';
 import ProtectedRoute from './components/ProtectedRoute';
 import DashboardScreen from './screens/DashboardScreen';
 import AdminRoute from './components/AdminRoute';
+import SellerRoute from './components/SellerRoute';
 import ProductListScreen from './screens/ProductListScreen';
 import ProductEditScreen from './screens/ProductEditScreen';
 import OrderListScreen from './screens/OrderListScreen';
@@ -94,6 +96,56 @@ function App() {
               <Navbar.Collapse id="basic-navbar-nav">
                 <SearchBox />
                 <Nav className="me-auto  w-100  justify-content-end">
+                  <NavDropdown title="READ" id="basic-nav-dropdown">
+                    <LinkContainer to="/dvorahdaily">
+                      <NavDropdown.Item>Dvorah Daily</NavDropdown.Item>
+                    </LinkContainer>
+                    <NavDropdown.Divider />
+                    <LinkContainer to="/bibleschool">
+                      <NavDropdown.Item>Bible School</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/devotionals">
+                      <NavDropdown.Item>Devotionals</NavDropdown.Item>
+                    </LinkContainer>
+                    <NavDropdown.Divider />
+                    <LinkContainer to="/about">
+                      <NavDropdown.Item>About</NavDropdown.Item>
+                    </LinkContainer>
+                  </NavDropdown>
+                  <NavDropdown title="EAT" id="basic-nav-dropdown">
+                    <LinkContainer to="/recipe planner">
+                      <NavDropdown.Item>Recipe Planner</NavDropdown.Item>
+                    </LinkContainer>
+                    <NavDropdown.Divider />
+                    <LinkContainer to="/honey">
+                      <NavDropdown.Item>Honey</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/herbs">
+                      <NavDropdown.Item>Herbs</NavDropdown.Item>
+                    </LinkContainer>
+                    <NavDropdown.Divider />
+                    <LinkContainer to="/recipes">
+                      <NavDropdown.Item>Recipes</NavDropdown.Item>
+                    </LinkContainer>
+                  </NavDropdown>
+                  <NavDropdown title="EXERCISE" id="basic-nav-dropdown">
+                    <LinkContainer to="/exercise">
+                      <NavDropdown.Item>Daily Exercise</NavDropdown.Item>
+                    </LinkContainer>
+                    <NavDropdown.Divider />
+                    <LinkContainer to="/praisemoves">
+                      <NavDropdown.Item>Praise Moves</NavDropdown.Item>
+                    </LinkContainer>
+                  </NavDropdown>
+                  <NavDropdown title="ORGANISE" id="basic-nav-dropdown">
+                    <LinkContainer to="/calendar">
+                      <NavDropdown.Item>Calendar</NavDropdown.Item>
+                    </LinkContainer>
+                    <NavDropdown.Divider />
+                    <LinkContainer to="/organiseinfo">
+                      <NavDropdown.Item>Info</NavDropdown.Item>
+                    </LinkContainer>
+                  </NavDropdown>
                   <Link to="/cart" className="nav-link">
                     Cart
                     {cart.cartItems.length > 0 && (
@@ -123,6 +175,16 @@ function App() {
                     <Link className="nav-link" to="/signin">
                       Sign In
                     </Link>
+                  )}
+                  {userInfo && userInfo.isSeller && (
+                    <NavDropdown title="Seller" id="admin-nav-dropdown">
+                      <LinkContainer to="/seller/products">
+                        <NavDropdown.Item>Products</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/seller/orders">
+                        <NavDropdown.Item>Orders</NavDropdown.Item>
+                      </LinkContainer>
+                    </NavDropdown>
                   )}
                   {userInfo && userInfo.isAdmin && (
                     <NavDropdown title="Admin" id="admin-nav-dropdown">
@@ -263,7 +325,24 @@ function App() {
                   </AdminRoute>
                 }
               ></Route>
-
+              {/* Seller Routes */}
+              <Route
+                path="/seller/products"
+                element={
+                  <SellerRoute>
+                    <ProductListScreen />
+                  </SellerRoute>
+                }
+              ></Route>
+              <Route
+                path="/seller/orders"
+                element={
+                  <SellerRoute>
+                    <OrderListScreen />
+                  </SellerRoute>
+                }
+              ></Route>
+              <Route path="/dvorahdaily" element={<DvorahDailyScreen />} />
               <Route path="/" element={<HomeScreen />} />
             </Routes>
           </Container>
