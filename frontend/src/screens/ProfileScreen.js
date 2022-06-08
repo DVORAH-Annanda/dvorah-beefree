@@ -29,6 +29,11 @@ export default function ProfileScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isSeller, setIsSeller] = useState(false);
+  const [sellerName, setSellerName] = useState(userInfo.sellerName);
+  const [sellerLogo, setSellerLogo] = useState(userInfo.sellerLogo);
+  const [sellerDescriptiom, setSellerDescriptiom] = useState(
+    userInfo.sellerDescriptiom
+  );
 
   const [{ loadingUpdate }, dispatch] = useReducer(reducer, {
     loadingUpdate: false,
@@ -109,6 +114,35 @@ export default function ProfileScreen() {
           checked={isSeller}
           onChange={(e) => setIsSeller(e.target.checked)}
         />
+        {userInfo.isSeller && (
+          <>
+            <h2>Seller</h2>
+            <Form.Group className="mb-3" controlId="sellerName">
+              <Form.Label>Seller Name</Form.Label>
+              <Form.Control
+                value={sellerName}
+                onChange={(e) => setSellerName(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="sellerLogo">
+              <Form.Label>Seller Logo</Form.Label>
+              <Form.Control
+                value={sellerLogo}
+                onChange={(e) => setSellerLogo(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="sellerDescriptiom">
+              <Form.Label>Seller Descriptiom</Form.Label>
+              <Form.Control
+                value={sellerDescriptiom}
+                onChange={(e) => setSellerDescriptiom(e.target.value)}
+                required
+              />
+            </Form.Group>
+          </>
+        )}
         <div className="mb-3">
           <Button type="submit">Update</Button>
         </div>

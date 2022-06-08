@@ -8,6 +8,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import Badge from 'react-bootstrap/Badge';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import { DropdownSubmenu, NavDropdownMenu } from 'react-bootstrap-submenu';
+import 'react-bootstrap-submenu/dist/index.css';
 import Container from 'react-bootstrap/Container';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useContext, useEffect, useState } from 'react';
@@ -96,8 +98,29 @@ function App() {
               <Navbar.Collapse id="basic-navbar-nav">
                 <SearchBox />
                 <Nav className="me-auto  w-100  justify-content-end">
+                  <NavDropdownMenu
+                    title="Solly Ozrovech"
+                    id="collasible-nav-dropdown"
+                  >
+                    <NavDropdown.Item href="#action/3.1">
+                      About
+                    </NavDropdown.Item>
+                    <DropdownSubmenu
+                      href="#action/3.7"
+                      title="Die Reisiger se Bybeljoernaal&nbsp;"
+                    >
+                      <NavDropdown.Item href="/read/dvorahdaily">
+                        In veilige bewaring
+                      </NavDropdown.Item>
+
+                      <NavDropdown.Item href="#action/9.1">
+                        Vertraag jou pas
+                      </NavDropdown.Item>
+                    </DropdownSubmenu>
+                  </NavDropdownMenu>
+
                   <NavDropdown title="READ" id="basic-nav-dropdown">
-                    <LinkContainer to="/dvorahdaily">
+                    <LinkContainer to="/read/dvorahdaily">
                       <NavDropdown.Item>Dvorah Daily</NavDropdown.Item>
                     </LinkContainer>
                     <NavDropdown.Divider />
@@ -112,6 +135,7 @@ function App() {
                       <NavDropdown.Item>About</NavDropdown.Item>
                     </LinkContainer>
                   </NavDropdown>
+
                   <NavDropdown title="EAT" id="basic-nav-dropdown">
                     <LinkContainer to="/recipe planner">
                       <NavDropdown.Item>Recipe Planner</NavDropdown.Item>
@@ -342,7 +366,7 @@ function App() {
                   </SellerRoute>
                 }
               ></Route>
-              <Route path="/dvorahdaily" element={<DvorahDailyScreen />} />
+              <Route path="read/dvorahdaily" element={<DvorahDailyScreen />} />
               <Route path="/" element={<HomeScreen />} />
             </Routes>
           </Container>

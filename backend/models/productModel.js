@@ -25,6 +25,7 @@ const productSchema = new mongoose.Schema(
     rating: { type: Number, required: true },
     numReviews: { type: Number, required: true },
     reviews: [reviewSchema],
+    seller: { type: mongoose.Schema.Types.ObjectID, ref: 'User' },
   },
   {
     timestamps: true,
