@@ -45,27 +45,17 @@ const data = {
   ],
   devotionals: [
     {
-      bibleVersion: 'Die Bybel 2020-vertaling: HOOFLETTERUITGAWE (AFR20HL)',
-      bibleChapter: 'Psalm 121:1-8; 125:1-2',
-      bibleReading:
-        '125:1 n Pelgrimslied. Dié wat op die Here vertrou, is soos Sionsberg wat nie wankel nie en altyd vas bly staan.  2 Soos die berge Jerusalem aan alle kante beskerm, so beskerm die Here sy volk, nou en vir altyd.',
       title: 'In veilige bewaring',
+      bibleVersion: 'Afrikaans 1983 (AFR83)',
+      bibleReading: 'Psalm 121:1-8; 125:1-2',
+      bible:
+        '125:1 n Pelgrimslied. Dié wat op die Here vertrou, is soos Sionsberg wat nie wankel nie en altyd vas bly staan.  2 Soos die berge Jerusalem aan alle kante beskerm, so beskerm die Here sy volk, nou en vir altyd.',
+
       body: 'Vertrektyd! Hoeveel uiteenlopende gedagtes spoed nie deur ons gedagtes nie! Tog bly daar n knaende onsekerheid wat deel is van...',
       quoteAuthor: 'David Nicholas',
       quote:
         'God se beloftes is soos die sterre, hoe donkerder die nag, hoe helderder skyn hulle.',
       bookId: 1,
-      userId: 1,
-    },
-  ],
-  devotionalNotes: [
-    {
-      date: '//TO DO: Hoe populate ek die datum in Mongo',
-      loaction: 'George, Western Cape //TO DO: Google maps',
-      notes:
-        'Dankie Abba Vader ir U groot liefde! Ek loop oor van dankbaarheid!',
-      devonalId: 1,
-      userId: 1,
     },
   ],
 };

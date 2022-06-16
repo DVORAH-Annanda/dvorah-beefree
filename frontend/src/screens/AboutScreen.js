@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-export default function DvorahDailyScreen() {
+export default function AboutScreen() {
   return (
     <div>
       <p>
