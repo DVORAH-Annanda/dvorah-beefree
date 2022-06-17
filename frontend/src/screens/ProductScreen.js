@@ -117,6 +117,7 @@ function ProductScreen() {
       dispatch({ type: 'CREATE_FAIL' });
     }
   };
+
   return loading ? (
     <LoadingBox />
   ) : error ? (
