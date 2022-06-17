@@ -62,7 +62,8 @@ devotionalRouter.post(
     const devotional = await Devotional.findById(devotionalId);
     if (devotional) {
       if (devotional.notes.find((x) => x.name === req.user.name)) {
-        return res.status(400).send({ message: 'You already added a note.' });
+        //TODO?
+        return res.send(devotionalNotes);
       }
 
       const userNotes = {
@@ -83,9 +84,7 @@ devotionalRouter.post(
 
 const PAGE_SIZE = 3;
 
-/////WIP tot hier!
-
-productRouter.get(
+devotionalRouter.get(
   '/admin',
   isAuth,
   isAdmin,
@@ -94,30 +93,30 @@ productRouter.get(
     const page = query.page || 1;
     const pageSize = query.pageSize || PAGE_SIZE;
 
-    const products = await Product.find()
+    const devotionals = await Devotional.find()
       .skip(pageSize * (page - 1))
       .limit(pageSize);
-    const countProducts = await Product.countDocuments();
+    const countDevotionals = await Devotional.countDocuments();
     res.send({
-      products,
-      countProducts,
+      devotionals,
+      countDevotionals,
       page,
-      pages: Math.ceil(countProducts / pageSize),
+      pages: Math.ceil(countDevotionals / pageSize),
     });
   })
 );
 
-productRouter.get(
+devotionalRouter.get(
   '/search',
   expressAsyncHandler(async (req, res) => {
     const { query } = req;
     const pageSize = query.pageSize || PAGE_SIZE;
     const page = query.page || 1;
-    const category = query.category || '';
-    const price = query.price || '';
-    const rating = query.rating || '';
-    const order = query.order || '';
-    const searchQuery = query.query || '';
+    const title = query.title || '';
+    const bibleReading = query.bibleReading || '';
+    const bible = query.bible || '';
+    const quote = query.quote || '';
+    const quoteAuthor = query.quoteAuthor || '';
 
     const queryFilter =
       searchQuery && searchQuery !== 'all'
@@ -128,86 +127,85 @@ productRouter.get(
             },
           }
         : {};
-    const categoryFilter = category && category !== 'all' ? { category } : {};
-    const ratingFilter =
-      rating && rating !== 'all'
+    const titleFilter = title && title !== 'all' ? { title } : {};
+    const bibleReadingFilter =
+      bibleReading && bibleReading !== 'all'
         ? {
-            rating: {
-              $gte: Number(rating),
-            },
+            bibleReading,
           }
         : {};
-    const priceFilter =
-      price && price !== 'all'
+    const bibleFilter =
+      bible && bible !== 'all'
         ? {
-            // 1-50
-            price: {
-              $gte: Number(price.split('-')[0]),
-              $lte: Number(price.split('-')[1]),
-            },
+            bible,
           }
         : {};
-    const sortOrder =
-      order === 'featured'
-        ? { featured: -1 }
-        : order === 'lowest'
-        ? { price: 1 }
-        : order === 'highest'
-        ? { price: -1 }
-        : order === 'toprated'
-        ? { rating: -1 }
-        : order === 'newest'
-        ? { createdAt: -1 }
-        : { _id: -1 };
+    const quoteFilter =
+      quote && quote !== 'all'
+        ? {
+            quote,
+          }
+        : {};
+    const quoteAuthorFilter =
+      quoteAuthor && quoteAuthor !== 'all'
+        ? {
+            quoteAuthor,
+          }
+        : {};
 
     const products = await Product.find({
       ...queryFilter,
-      ...categoryFilter,
-      ...priceFilter,
-      ...ratingFilter,
+      ...titleFilter,
+      ...bibleReadingFilter,
+      ...bibleFilter,
+      ...quoteFilter,
+      ...quoteAuthorFilter,
     })
       .sort(sortOrder)
       .skip(pageSize * (page - 1))
       .limit(pageSize);
 
-    const countProducts = await Product.countDocuments({
+    const countDevotionals = await Devotional.countDocuments({
       ...queryFilter,
-      ...categoryFilter,
-      ...priceFilter,
-      ...ratingFilter,
+      ...titleFilter,
+      ...bibleReadingFilter,
+      ...bibleFilter,
+      ...quoteFilter,
+      ...quoteAuthorFilter,
     });
     res.send({
-      products,
-      countProducts,
+      devotionals,
+      countDevotionals,
       page,
-      pages: Math.ceil(countProducts / pageSize),
+      pages: Math.ceil(countDevotionals / pageSize),
     });
   })
 );
 
-productRouter.get(
-  '/categories',
+devotionalRouter.get(
+  '/bibleversions',
   expressAsyncHandler(async (req, res) => {
-    const categories = await Product.find().distinct('category');
-    res.send(categories);
+    const bibleVersions = await Devotional.find().distinct('bibleVersion');
+    res.send(bibleVersions);
   })
 );
 
-productRouter.get('/slug/:slug', async (req, res) => {
-  const product = await Product.findOne({ slug: req.params.slug });
-  if (product) {
-    res.send(product);
+devotionalRouter.get('/title/:title', async (req, res) => {
+  const devotional = await Devotional.findOne({ title: req.params.title });
+  if (devotional) {
+    res.send(devotional);
   } else {
-    res.status(404).send({ message: 'Product Not Found' });
-  }
-});
-productRouter.get('/:id', async (req, res) => {
-  const product = await Product.findById(req.params.id);
-  if (product) {
-    res.send(product);
-  } else {
-    res.status(404).send({ message: 'Product Not Found' });
+    res.status(404).send({ message: 'Devotional not found.' });
   }
 });
 
-export default productRouter;
+devotionalRouter.get('/:id', async (req, res) => {
+  const devotional = await Devotional.findById(req.params.id);
+  if (devotional) {
+    res.send(devotional);
+  } else {
+    res.status(404).send({ message: 'Devotional not found.' });
+  }
+});
+
+export default devotionalRouter;

@@ -31,4 +31,4 @@ const devotionalSchema = new mongoose.Schema(
 );
 
 const Devotional = mongoose.model('Devotional', devotionalSchema);
-export default Product;
+export default Devotional;
