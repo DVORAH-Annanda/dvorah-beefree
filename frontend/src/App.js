@@ -3,6 +3,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HomeScreen from './screens/HomeScreen';
 import DvorahDailyScreen from './screens/DvorahDailyScreen';
+import DevotionalScreen from './screens/DevotionalScreen';
 import ProductScreen from './screens/ProductScreen';
 import Navbar from 'react-bootstrap/Navbar';
 import Badge from 'react-bootstrap/Badge';
@@ -32,6 +33,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import DashboardScreen from './screens/DashboardScreen';
 import AdminRoute from './components/AdminRoute';
 import SellerRoute from './components/SellerRoute';
+import DevotionalListScreen from './screens/DevotionalListScreen'; //WIP - moet nou die screen bou!
+import DevotionalEditScreen from './screens/DevotionalEditScreen';
 import ProductListScreen from './screens/ProductListScreen';
 import ProductEditScreen from './screens/ProductEditScreen';
 import OrderListScreen from './screens/OrderListScreen';
@@ -212,6 +215,9 @@ function App() {
                   )}
                   {userInfo && userInfo.isAdmin && (
                     <NavDropdown title="Admin" id="admin-nav-dropdown">
+                      <LinkContainer to="/admin/createDevotionals">
+                        <NavDropdown.Item>Devotionals</NavDropdown.Item>
+                      </LinkContainer>
                       <LinkContainer to="/admin/dashboard">
                         <NavDropdown.Item>Dashboard</NavDropdown.Item>
                       </LinkContainer>

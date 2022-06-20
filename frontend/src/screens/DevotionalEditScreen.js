@@ -33,7 +33,7 @@ const reducer = (state, action) => {
 
 export default function DevotionalEditScreen() {
   const navigate = useNavigate();
-  const params = useParams(); // /product/:id
+  const params = useParams(); // /devotional/:id
   const { id: devotionalId } = params;
 
   const { state } = useContext(Store);
@@ -47,7 +47,6 @@ export default function DevotionalEditScreen() {
   const [bibleVersion, setBibleVersion] = useState('');
   const [bibleReading, setBibleReading] = useState(''); //Bible Chapters
   const [bible, setBible] = useState('');
-
   const [devotional, setDevotional] = useState('');
   const [quoteAuthor, setQuoteAuthor] = useState('');
   const [quote, setQuote] = useState('');
@@ -58,14 +57,14 @@ export default function DevotionalEditScreen() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/devotionals/${devotionalId}`);
-        setTitle(data.name);
-        setBibleVersion(data.slug);
-        setBibleReading(data.price);
-        setBible(data.image);
-        setDevotional(data.images);
-        setQuoteAuthor(data.category);
-        setQuote(data.countInStock);
-        setBookId(data.brand);
+        setTitle(data.title);
+        setBibleVersion(data.bibleVersion);
+        setBibleReading(data.bibleReading);
+        setBible(data.bible);
+        setDevotional(data.devotional);
+        setQuoteAuthor(data.quoteAuthor);
+        setQuote(data.quote);
+        setBookId(data.bookId);
         dispatch({ type: 'FETCH_SUCCESS' });
       } catch (err) {
         dispatch({
@@ -87,13 +86,12 @@ export default function DevotionalEditScreen() {
           _id: devotionalId,
           title,
           bibleVersion,
-          price,
-          image,
-          images,
-          category,
-          brand,
-          countInStock,
-          description,
+          bibleReading,
+          bible,
+          devotional,
+          quoteAuthor,
+          quote,
+          bookId,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -102,51 +100,51 @@ export default function DevotionalEditScreen() {
       dispatch({
         type: 'UPDATE_SUCCESS',
       });
-      toast.success('Product updated successfully');
-      navigate('/admin/products');
+      toast.success('Devotional updated successfully.');
+      navigate('/admin/devotionals');
     } catch (err) {
       toast.error(getError(err));
       dispatch({ type: 'UPDATE_FAIL' });
     }
   };
-  const uploadFileHandler = async (e, forImages) => {
-    const file = e.target.files[0];
-    const bodyFormData = new FormData();
-    bodyFormData.append('file', file);
-    try {
-      dispatch({ type: 'UPLOAD_REQUEST' });
-      const { data } = await axios.post('/api/upload', bodyFormData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          authorization: `Bearer ${userInfo.token}`,
-        },
-      });
-      dispatch({ type: 'UPLOAD_SUCCESS' });
+  // const uploadFileHandler = async (e, forImages) => {
+  //   const file = e.target.files[0];
+  //   const bodyFormData = new FormData();
+  //   bodyFormData.append('file', file);
+  //   try {
+  //     dispatch({ type: 'UPLOAD_REQUEST' });
+  //     const { data } = await axios.post('/api/upload', bodyFormData, {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //         authorization: `Bearer ${userInfo.token}`,
+  //       },
+  //     });
+  //     dispatch({ type: 'UPLOAD_SUCCESS' });
 
-      if (forImages) {
-        setImages([...images, data.secure_url]);
-      } else {
-        setImage(data.secure_url);
-      }
-      toast.success('Image uploaded successfully. click Update to apply it');
-    } catch (err) {
-      toast.error(getError(err));
-      dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
-    }
-  };
-  const deleteFileHandler = async (fileName, f) => {
-    console.log(fileName, f);
-    console.log(images);
-    console.log(images.filter((x) => x !== fileName));
-    setImages(images.filter((x) => x !== fileName));
-    toast.success('Image removed successfully. click Update to apply it');
-  };
+  //     if (forImages) {
+  //       setImages([...images, data.secure_url]);
+  //     } else {
+  //       setImage(data.secure_url);
+  //     }
+  //     toast.success('Image uploaded successfully. Update to apply.');
+  //   } catch (err) {
+  //     toast.error(getError(err));
+  //     dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
+  //   }
+  // };
+  // const deleteFileHandler = async (fileName, f) => {
+  //   console.log(fileName, f);
+  //   console.log(images);
+  //   console.log(images.filter((x) => x !== fileName));
+  //   setImages(images.filter((x) => x !== fileName));
+  //   toast.success('Image removed successfully. Update to apply.');
+  // };
   return (
     <Container className="small-container">
       <Helmet>
-        <title>Edit Product ${productId}</title>
+        <title>Edit devotional ${devotionalId}</title>
       </Helmet>
-      <h1>Edit Product {productId}</h1>
+      <h1>Edit devotional {devotionalId}</h1>
 
       {loading ? (
         <LoadingBox></LoadingBox>
@@ -154,99 +152,71 @@ export default function DevotionalEditScreen() {
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
         <Form onSubmit={submitHandler}>
-          <Form.Group className="mb-3" controlId="name">
-            <Form.Label>Name</Form.Label>
+          <Form.Group className="mb-3" controlId="title">
+            <Form.Label>Title</Form.Label>
             <Form.Control
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               required
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="slug">
-            <Form.Label>Slug</Form.Label>
+          <Form.Group className="mb-3" controlId="bibleVersion">
+            <Form.Label>Bible Version</Form.Label>
             <Form.Control
-              value={slug}
-              onChange={(e) => setSlug(e.target.value)}
+              value={bibleVersion}
+              onChange={(e) => setBibleVersion(e.target.value)}
               required
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="name">
-            <Form.Label>Price</Form.Label>
+          <Form.Group className="mb-3" controlId="bibleReading">
+            <Form.Label>Bible Reading</Form.Label>
             <Form.Control
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              value={bibleReading}
+              onChange={(e) => setBibleReading(e.target.value)}
               required
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="image">
-            <Form.Label>Image File</Form.Label>
+          <Form.Group className="mb-3" controlId="bible">
+            <Form.Label>Bible</Form.Label>
             <Form.Control
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
+              value={bible}
+              onChange={(e) => setBible(e.target.value)}
               required
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="imageFile">
-            <Form.Label>Upload Image</Form.Label>
-            <Form.Control type="file" onChange={uploadFileHandler} />
-            {loadingUpload && <LoadingBox></LoadingBox>}
+          <Form.Group className="mb-3" controlId="devotional">
+            <Form.Label>Devotional</Form.Label>
+            <Form.Control
+              value={devotional}
+              onChange={(e) => setDevotional(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="quoteAuthor">
+            <Form.Label>Quote Author</Form.Label>
+            <Form.Control
+              value={quoteAuthor}
+              onChange={(e) => setQuoteAuthor(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="quote">
+            <Form.Label>Quote</Form.Label>
+            <Form.Control
+              value={quote}
+              onChange={(e) => setQuote(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="bookId">
+            <Form.Label>Book Id</Form.Label>
+            <Form.Control
+              value={bookId}
+              onChange={(e) => setBookId(e.target.value)}
+              required
+            />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="additionalImage">
-            <Form.Label>Additional Images</Form.Label>
-            {images.length === 0 && <MessageBox>No image</MessageBox>}
-            <ListGroup variant="flush">
-              {images.map((x) => (
-                <ListGroup.Item key={x}>
-                  {x}
-                  <Button variant="light" onClick={() => deleteFileHandler(x)}>
-                    <i className="fa fa-times-circle"></i>
-                  </Button>
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="additionalImageFile">
-            <Form.Label>Upload Aditional Image</Form.Label>
-            <Form.Control
-              type="file"
-              onChange={(e) => uploadFileHandler(e, true)}
-            />
-            {loadingUpload && <LoadingBox></LoadingBox>}
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="category">
-            <Form.Label>Category</Form.Label>
-            <Form.Control
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="brand">
-            <Form.Label>Brand</Form.Label>
-            <Form.Control
-              value={brand}
-              onChange={(e) => setBrand(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="countInStock">
-            <Form.Label>Count In Stock</Form.Label>
-            <Form.Control
-              value={countInStock}
-              onChange={(e) => setCountInStock(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="description">
-            <Form.Label>Description</Form.Label>
-            <Form.Control
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-          </Form.Group>
           <div className="mb-3">
             <Button disabled={loadingUpdate} type="submit">
               Update
