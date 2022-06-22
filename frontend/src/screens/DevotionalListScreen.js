@@ -17,7 +17,7 @@ const reducer = (state, action) => {
     case 'FETCH_SUCCESS':
       return {
         ...state,
-        products: action.payload.products,
+        devotionals: action.payload.devotionals,
         page: action.payload.page,
         pages: action.payload.pages,
         loading: false,
@@ -57,7 +57,7 @@ export default function DevotionalListScreen() {
     {
       loading,
       error,
-      products,
+      devotionals,
       pages,
       loadingCreate,
       loadingDelete,
@@ -80,9 +80,12 @@ export default function DevotionalListScreen() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(`/api/products/admin?page=${page} `, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios.get(
+          `/api/devotionals/admin?page=${page} `,
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }
+        );
 
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {}
@@ -96,19 +99,19 @@ export default function DevotionalListScreen() {
   }, [page, userInfo, successDelete]);
 
   const createHandler = async () => {
-    if (window.confirm('Are you sure you want to create a new product?')) {
+    if (window.confirm('Are you sure you want to create a new devotional?')) {
       try {
         dispatch({ type: 'CREATE_REQUEST' });
         const { data } = await axios.post(
-          '/api/products',
+          '/api/devotionals',
           {},
           {
             headers: { Authorization: `Bearer ${userInfo.token}` },
           }
         );
-        toast.success('product created successfully');
+        toast.success('Devotional created successfully.');
         dispatch({ type: 'CREATE_SUCCESS' });
-        navigate(`/admin/product/${data.product._id}`);
+        navigate(`/admin/devotional/${data.devotional._id}`);
       } catch (err) {
         toast.error(getError(error));
         dispatch({
@@ -118,33 +121,16 @@ export default function DevotionalListScreen() {
     }
   };
 
-  const deleteHandler = async (product) => {
-    if (window.confirm('Are you sure to delete?')) {
-      try {
-        await axios.delete(`/api/products/${product._id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
-        toast.success('product deleted successfully');
-        dispatch({ type: 'DELETE_SUCCESS' });
-      } catch (err) {
-        toast.error(getError(error));
-        dispatch({
-          type: 'DELETE_FAIL',
-        });
-      }
-    }
-  };
-
   return (
     <div>
       <Row>
         <Col>
-          <h1>Products</h1>
+          <h1>Devotionals</h1>
         </Col>
         <Col className="col text-end">
           <div>
             <Button type="button" onClick={createHandler}>
-              Create Product
+              Create Devotional
             </Button>
           </div>
         </Col>
@@ -163,36 +149,30 @@ export default function DevotionalListScreen() {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>NAME</th>
-                <th>PRICE</th>
-                <th>CATEGORY</th>
-                <th>BRAND</th>
+                <th>TITLE</th>
+                <th>BIBLE READING</th>
+                <th>BIBLE VERSION</th>
+                <th>BOOK ID</th>
                 <th>ACTIONS</th>
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
-                <tr key={product._id}>
-                  <td>{product._id}</td>
-                  <td>{product.name}</td>
-                  <td>{product.price}</td>
-                  <td>{product.category}</td>
-                  <td>{product.brand}</td>
+              {devotionals.map((devotional) => (
+                <tr key={devotional._id}>
+                  <td>{devotional._id}</td>
+                  <td>{devotional.title}</td>
+                  <td>{devotional.bibleReading}</td>
+                  <td>{devotional.bibleVersion}</td>
+                  <td>{devotional.bookId}</td>
                   <td>
                     <Button
                       type="button"
                       variant="light"
-                      onClick={() => navigate(`/admin/product/${product._id}`)}
+                      onClick={() =>
+                        navigate(`/admin/devotional/${devotional._id}`)
+                      }
                     >
                       Edit
-                    </Button>
-                    &nbsp;
-                    <Button
-                      type="button"
-                      variant="light"
-                      onClick={() => deleteHandler(product)}
-                    >
-                      Delete
                     </Button>
                   </td>
                 </tr>
@@ -204,7 +184,7 @@ export default function DevotionalListScreen() {
               <Link
                 className={x + 1 === Number(page) ? 'btn text-bold' : 'btn'}
                 key={x + 1}
-                to={`/admin/products?page=${x + 1}`}
+                to={`/admin/devotionalS?page=${x + 1}`}
               >
                 {x + 1}
               </Link>

@@ -204,7 +204,7 @@ function App() {
                     </Link>
                   )}
                   {userInfo && userInfo.isSeller && (
-                    <NavDropdown title="Seller" id="admin-nav-dropdown">
+                    <NavDropdown title="Seller" id="seller-nav-dropdown">
                       <LinkContainer to="/seller/products">
                         <NavDropdown.Item>Products</NavDropdown.Item>
                       </LinkContainer>
@@ -215,7 +215,7 @@ function App() {
                   )}
                   {userInfo && userInfo.isAdmin && (
                     <NavDropdown title="Admin" id="admin-nav-dropdown">
-                      <LinkContainer to="/admin/createDevotionals">
+                      <LinkContainer to="/admin/devotionals">
                         <NavDropdown.Item>Devotionals</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/dashboard">
@@ -336,6 +336,22 @@ function App() {
                 element={
                   <AdminRoute>
                     <ProductListScreen />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/devotionals"
+                element={
+                  <AdminRoute>
+                    <DevotionalListScreen />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/devotional/:id"
+                element={
+                  <AdminRoute>
+                    <DevotionalEditScreen />
                   </AdminRoute>
                 }
               ></Route>
