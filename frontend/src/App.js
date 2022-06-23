@@ -101,43 +101,31 @@ function App() {
               <Navbar.Collapse id="basic-navbar-nav">
                 <SearchBox />
                 <Nav className="me-auto  w-100  justify-content-end">
-                  <NavDropdownMenu
-                    title="Solly Ozrovech"
-                    id="collasible-nav-dropdown"
-                  >
-                    <NavDropdown.Item href="#action/3.1">
-                      About
-                    </NavDropdown.Item>
-                    <DropdownSubmenu
-                      href="#action/3.7"
-                      title="Die Reisiger se Bybeljoernaal&nbsp;"
-                    >
-                      <NavDropdown.Item href="/read/dvorahdaily">
-                        In veilige bewaring
-                      </NavDropdown.Item>
-
-                      <NavDropdown.Item href="#action/9.1">
-                        Vertraag jou pas
-                      </NavDropdown.Item>
-                    </DropdownSubmenu>
-                  </NavDropdownMenu>
-
-                  <NavDropdown title="READ" id="basic-nav-dropdown">
+                  <NavDropdownMenu title="READ" id="collasible-nav-dropdown">
                     <LinkContainer to="/read/dvorahdaily">
                       <NavDropdown.Item>Dvorah Daily</NavDropdown.Item>
                     </LinkContainer>
                     <NavDropdown.Divider />
-                    <LinkContainer to="/bibleschool">
-                      <NavDropdown.Item>Bible School</NavDropdown.Item>
-                    </LinkContainer>
-                    <LinkContainer to="/devotionals">
-                      <NavDropdown.Item>Devotionals</NavDropdown.Item>
+                    <DropdownSubmenu
+                      href="#action/3.7"
+                      title="Solly Ozrovech&nbsp;"
+                    >
+                      <NavDropdown.Item href="/read/sollyozrovech/about">
+                        About
+                      </NavDropdown.Item>
+
+                      <NavDropdown.Item href="#action/9.1">
+                        Die reisiger se Bybeljoernaal
+                      </NavDropdown.Item>
+                    </DropdownSubmenu>
+                    <LinkContainer to="/read/bybelskool">
+                      <NavDropdown.Item>Bybelskool</NavDropdown.Item>
                     </LinkContainer>
                     <NavDropdown.Divider />
-                    <LinkContainer to="/about">
+                    <LinkContainer to="/read/about">
                       <NavDropdown.Item>About</NavDropdown.Item>
                     </LinkContainer>
-                  </NavDropdown>
+                  </NavDropdownMenu>
 
                   <NavDropdown title="EAT" id="basic-nav-dropdown">
                     <LinkContainer to="/recipe planner">
@@ -183,12 +171,22 @@ function App() {
                   </Link>
                   {userInfo ? (
                     <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
-                      <LinkContainer to="/profile">
-                        <NavDropdown.Item>User Profile</NavDropdown.Item>
-                      </LinkContainer>
+                      <Link to="/cart" className="dropdown-item">
+                        Cart
+                        {cart.cartItems.length > 0 && (
+                          <Badge pill bg="danger">
+                            {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                          </Badge>
+                        )}
+                      </Link>
                       <LinkContainer to="/orderhistory">
                         <NavDropdown.Item>Order History</NavDropdown.Item>
                       </LinkContainer>
+                      <NavDropdown.Divider />
+                      <LinkContainer to="/profile">
+                        <NavDropdown.Item>User Profile</NavDropdown.Item>
+                      </LinkContainer>
+
                       <NavDropdown.Divider />
                       <Link
                         className="dropdown-item"
