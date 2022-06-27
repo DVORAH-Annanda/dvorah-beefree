@@ -3,7 +3,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HomeScreen from './screens/HomeScreen';
 import DvorahDailyScreen from './screens/DvorahDailyScreen';
-import DevotionalScreen from './screens/DevotionalScreen';
+import DevotionalScreen from './screens/DevotionalsScreen';
+import DevotionalsScreen from './screens/DevotionalsScreen';
 import ProductScreen from './screens/ProductScreen';
 import Navbar from 'react-bootstrap/Navbar';
 import Badge from 'react-bootstrap/Badge';
@@ -106,16 +107,20 @@ function App() {
                       <NavDropdown.Item>Dvorah Daily</NavDropdown.Item>
                     </LinkContainer>
                     <NavDropdown.Divider />
-                    <DropdownSubmenu
-                      href="#action/3.7"
-                      title="Solly Ozrovech&nbsp;"
-                    >
+                    <DropdownSubmenu title="Solly Ozrovech&nbsp;">
                       <NavDropdown.Item href="/read/sollyozrovech/about">
-                        About
+                        <Link to="/read/dvorahdaily" className="dropdown-item">
+                          About
+                        </Link>
                       </NavDropdown.Item>
 
-                      <NavDropdown.Item href="#action/9.1">
-                        Die reisiger se Bybeljoernaal
+                      <NavDropdown.Item>
+                        <Link
+                          to="/read/sollyozrovech/reisigerbybeljoernaal"
+                          className="dropdown-item"
+                        >
+                          Die reisiger se Bybeljoernaal
+                        </Link>
                       </NavDropdown.Item>
                     </DropdownSubmenu>
                     <LinkContainer to="/read/bybelskool">
@@ -387,6 +392,14 @@ function App() {
                 }
               ></Route>
               <Route path="read/dvorahdaily" element={<DvorahDailyScreen />} />
+              <Route
+                path="/read/sollyozrovech/about"
+                element={<DvorahDailyScreen />}
+              />
+              <Route
+                path="/read/sollyozrovech/reisigerbybeljoernaal"
+                element={<DevotionalsScreen />}
+              />
               <Route path="/" element={<HomeScreen />} />
             </Routes>
           </Container>

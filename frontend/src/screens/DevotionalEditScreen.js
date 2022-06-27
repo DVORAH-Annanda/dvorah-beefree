@@ -142,9 +142,9 @@ export default function DevotionalEditScreen() {
   return (
     <Container className="small-container">
       <Helmet>
-        <title>Edit devotional ${devotionalId}</title>
+        <title>Edit Devotional ${devotionalId}</title>
       </Helmet>
-      <h1>Edit devotional {devotionalId}</h1>
+      <h1>Edit Devotional {devotionalId}</h1>
 
       {loading ? (
         <LoadingBox></LoadingBox>
